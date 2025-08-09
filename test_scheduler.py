@@ -35,3 +35,12 @@ class TestScheduler(unittest.TestCase):
         self.assertFalse(
             self.scheduler.is_available("2025-02-15", "10:00", "11:00")
         )
+
+    def test_find_slot_for_duration(self):
+        """Проверка нахождения свободного слота
+        для указанной продолжительности заявки."""
+        result = self.scheduler.find_slot_for_duration(30)
+        self.assertEqual(result, ("2025-02-15", "12:00", "12:30"))
+
+        result = self.scheduler.find_slot_for_duration(300000)
+        self.assertEqual(result, ())
