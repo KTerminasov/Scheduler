@@ -46,3 +46,31 @@ class Scheduler:
             return []
 
         return self.timeslots[date]
+
+    def get_free_slots(self, date):
+        """Получение всех свободных промежутков для указанной даты."""
+
+        if date not in self.days:
+            return []
+
+        day = self.days[date]
+        start_time = day['start']
+        end_time = day['end']
+
+        busy_slots = self.get_busy_slots(date)
+        if not busy_slots:
+            return [(start_time, end_time)]
+
+        free_slots = []
+        last_end = start_time
+
+        for start, end in busy_slots:
+            if last_end < start:
+                free_slots.append((last_end, start))
+            last_end = end
+
+        if last_end < end_time:
+            free_slots.append((last_end, end_time))
+
+        return free_slots
+
