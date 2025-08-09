@@ -15,7 +15,7 @@ class Scheduler:
         """Преобразование часов в минуты."""
         hours, minutes = map(int, time.split(':'))
         return hours * 60 + minutes
-    
+
     def _convert_to_hours(self, minutes):
         """Преобразование минут в часы."""
         hours = minutes // 60
@@ -112,17 +112,18 @@ class Scheduler:
         return True
 
     def find_slot_for_duration(self, duration_in_minutes):
-        """Нахождение свободного слота для указанной продолжительности."""
-        for date, slots in self.timeslots.items():
-            free_slots = self.get_free_slots(date)  
-            
+        """Нахождение свободного слота для
+        указанной продолжительности заявки."""
+        for date, _ in self.timeslots.items():
+            free_slots = self.get_free_slots(date)
+
             for start, end in free_slots:
                 start_time = self._convert_to_minutes(start)
                 end_time = self._convert_to_minutes(end)
-       
+
                 if end_time - start_time >= duration_in_minutes:
                     return (
-                        date, start, 
+                        date, start,
                         self._convert_to_hours(
                             start_time + duration_in_minutes
                         )
