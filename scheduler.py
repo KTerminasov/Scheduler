@@ -74,3 +74,27 @@ class Scheduler:
 
         return free_slots
 
+    def is_available(self, date, start_time, end_time):
+        """Проверка доступности работника в указанное время."""
+        if date not in self.days:
+            return False
+
+        day = self.days[date]
+        day_start = day['start']
+        day_end = day['end']
+
+        if (start_time < day_start or end_time > day_end or
+                day_start >= day_end):
+            return False
+
+        busy_slots = self.get_busy_slots(date)
+        if not busy_slots:
+            return True
+
+        for busy_start, busy_end in busy_slots:
+            if ((start_time < busy_start and end_time > busy_start) or
+                    (start_time < busy_end and end_time > busy_end) or
+                    (start_time >= busy_start and end_time <= busy_end)):
+                return False
+
+        return True

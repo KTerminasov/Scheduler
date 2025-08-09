@@ -18,7 +18,7 @@ class TestScheduler(unittest.TestCase):
 
         result = self.scheduler.get_busy_slots("2024-10-12")
         self.assertEqual(result, [])
-    
+
     def test_get_free_slots(self):
         """Проверка получения свободных слотов."""
         result = self.scheduler.get_free_slots("2025-02-15")
@@ -26,3 +26,12 @@ class TestScheduler(unittest.TestCase):
 
         result = self.scheduler.get_free_slots("2024-10-12")
         self.assertEqual(result, [])
+
+    def test_is_available(self):
+        """Проверка доступности работника."""
+        self.assertTrue(
+            self.scheduler.is_available("2025-02-15", "12:30", "13:00")
+        )
+        self.assertFalse(
+            self.scheduler.is_available("2025-02-15", "10:00", "11:00")
+        )
